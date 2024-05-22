@@ -45,8 +45,8 @@ public class ViewerPreferencesProvider extends JPanel implements PreferencesPane
         add(new JLabel(MessageUtil.getMessage("preferences.viewer.language.title")), BorderLayout.WEST);
 
         languageComboBox = new JComboBox<>();//创建一个下拉列表框c1
-        languageComboBox.addItem("ZH_CN");
         languageComboBox.addItem("ENG");
+        languageComboBox.addItem("ZH_CN");
         languageComboBox.addItemListener(e -> {
             if (ItemEvent.SELECTED == e.getStateChange()) {
                 //getSelectedItem()返回当前所选项

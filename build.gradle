@@ -16,7 +16,7 @@ apply plugin: 'edu.sc.seis.launch4j'
 apply plugin: 'nebula.ospackage'
 
 // Common configuration //
-rootProject.version='1.6.6'
+rootProject.version='1.6.7'
 rootProject.ext.set('jdCoreVersion', '1.1.3')
 targetCompatibility = '1.8'
 
@@ -112,6 +112,9 @@ task proguard(type: proguard.gradle.ProGuardTask, dependsOn: 'jar') {
 // Java executable wrapper for Windows //
 launch4j {
     createExe.dependsOn 'proguard'
+
+    // fix 中文乱码
+    jvmOptions = ['-Dfile.encoding=utf-8']
 
     version = textVersion = project.version
     fileDescription = productName = 'JD-GUI'

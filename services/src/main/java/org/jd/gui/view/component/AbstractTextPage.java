@@ -256,12 +256,12 @@ public class AbstractTextPage extends JPanel implements LineNumberNavigable, Con
     public boolean checkLineNumber(int lineNumber) { return true; }
 
     // --- ContentSearchable --- //
-    public boolean highlightText(String text, boolean caseSensitive) {
+    public boolean highlightText(String text, boolean caseSensitive, boolean regex) {
         if (text.length() > 1) {
             textArea.setMarkAllHighlightColor(SEARCH_HIGHLIGHT_COLOR);
             textArea.setCaretPosition(textArea.getSelectionStart());
 
-            SearchContext context = newSearchContext(text, caseSensitive, false, true, false);
+            SearchContext context = newSearchContext(text, caseSensitive, false, true, regex);
             SearchResult result = SearchEngine.find(textArea, context);
 
             if (!result.wasFound()) {
@@ -275,11 +275,11 @@ public class AbstractTextPage extends JPanel implements LineNumberNavigable, Con
         }
     }
 
-    public void findNext(String text, boolean caseSensitive) {
+    public void findNext(String text, boolean caseSensitive, boolean regex) {
         if (text.length() > 1) {
             textArea.setMarkAllHighlightColor(SEARCH_HIGHLIGHT_COLOR);
 
-            SearchContext context = newSearchContext(text, caseSensitive, false, true, false);
+            SearchContext context = newSearchContext(text, caseSensitive, false, true, regex);
             SearchResult result = SearchEngine.find(textArea, context);
 
             if (!result.wasFound()) {
@@ -289,11 +289,11 @@ public class AbstractTextPage extends JPanel implements LineNumberNavigable, Con
         }
     }
 
-    public void findPrevious(String text, boolean caseSensitive) {
+    public void findPrevious(String text, boolean caseSensitive, boolean regex) {
         if (text.length() > 1) {
             textArea.setMarkAllHighlightColor(SEARCH_HIGHLIGHT_COLOR);
 
-            SearchContext context = newSearchContext(text, caseSensitive, false, false, false);
+            SearchContext context = newSearchContext(text, caseSensitive, false, false, regex);
             SearchResult result = SearchEngine.find(textArea, context);
 
             if (!result.wasFound()) {

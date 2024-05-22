@@ -11,6 +11,7 @@ import org.jd.gui.controller.MainController;
 import org.jd.gui.model.configuration.Configuration;
 import org.jd.gui.service.configuration.ConfigurationPersister;
 import org.jd.gui.service.configuration.ConfigurationPersisterService;
+import org.jd.gui.util.MessageUtil;
 import org.jd.gui.util.exception.ExceptionUtil;
 import org.jd.gui.util.net.InterProcessCommunicationUtil;
 
@@ -28,14 +29,15 @@ public class App {
 
     protected static MainController controller;
 
-    //设置全局字体
+    // 设置全局字体
     public static void initGlobalFontSetting(Font fnt){
         FontUIResource fontRes = new FontUIResource(fnt);
         for(Enumeration keys = UIManager.getDefaults().keys(); keys.hasMoreElements();){
             Object key = keys.nextElement();
             Object value = UIManager.get(key);
-            if(value instanceof FontUIResource)
+            if(value instanceof FontUIResource) {
                 UIManager.put(key, fontRes);
+            }
         }
     }
 
@@ -46,9 +48,10 @@ public class App {
             // Load preferences
             ConfigurationPersister persister = ConfigurationPersisterService.getInstance().get();
             Configuration configuration = persister.load();
+            MessageUtil.setLanguage(configuration.getPreferences().get("ViewerPreferences.languageKey"));
             Runtime.getRuntime().addShutdownHook(new Thread(() -> persister.save(configuration)));
 
-            initGlobalFontSetting(new Font("JetBrains Mono", Font.PLAIN, 16));
+            initGlobalFontSetting(new Font("Microsoft YaHei UI", Font.PLAIN, 16));
 
             if ("true".equals(configuration.getPreferences().get(SINGLE_INSTANCE))) {
                 InterProcessCommunicationUtil ipc = new InterProcessCommunicationUtil();

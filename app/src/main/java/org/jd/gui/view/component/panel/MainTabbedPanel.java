@@ -10,6 +10,7 @@ package org.jd.gui.view.component.panel;
 import org.jd.gui.api.API;
 import org.jd.gui.api.feature.*;
 import org.jd.gui.service.platform.PlatformService;
+import org.jd.gui.util.MessageUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -52,13 +53,16 @@ public class MainTabbedPanel<T extends JComponent & UriGettable> extends TabbedP
         box.setBackground(panel.getBackground());
         box.add(Box.createVerticalGlue());
 
-        JLabel title = newLabel("No files are open", fontColor);
-        title.setFont(title.getFont().deriveFont(Font.BOLD, title.getFont().getSize()+8));
+//        JLabel title = newLabel("No files are open", fontColor);
+//        title.setFont(title.getFont().deriveFont(Font.BOLD, title.getFont().getSize() + 8));
+//        box.add(title);
 
-        box.add(title);
-        box.add(newLabel("Open a file with menu \"File > Open File...\"", fontColor));
-        box.add(newLabel("Open recent files with menu \"File > Recent Files\"", fontColor));
-        box.add(newLabel("Drag and drop files from " + getFileManagerLabel(), fontColor));
+        for (String openTip : MessageUtil.getOpenTips()) {
+            box.add(newLabel(openTip, fontColor));
+        }
+//        box.add(newLabel("Open a file with menu \"File > Open File...\"", fontColor));
+//        box.add(newLabel("Open recent files with menu \"File > Recent Files\"", fontColor));
+//        box.add(newLabel("Drag and drop files from " + getFileManagerLabel(), fontColor));
         box.add(Box.createVerticalGlue());
 
         panel.add(box);

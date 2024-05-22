@@ -307,13 +307,13 @@ public class MainController implements API {
 
     protected void onFindCriteriaChanged() {
         if (currentPage instanceof ContentSearchable) {
-            mainView.setFindBackgroundColor(((ContentSearchable)currentPage).highlightText(mainView.getFindText(), mainView.getFindCaseSensitive()));
+            mainView.setFindBackgroundColor(((ContentSearchable)currentPage).highlightText(mainView.getFindText(), mainView.getFindCaseSensitive(), mainView.getFindRegex()));
         }
     }
 
     protected void onFindNext() {
         if (currentPage instanceof ContentSearchable) {
-            ((ContentSearchable)currentPage).findNext(mainView.getFindText(), mainView.getFindCaseSensitive());
+            ((ContentSearchable)currentPage).findNext(mainView.getFindText(), mainView.getFindCaseSensitive(), mainView.getFindRegex());
         }
     }
 
@@ -342,7 +342,7 @@ public class MainController implements API {
     protected void onFindPrevious() {
         if (currentPage instanceof ContentSearchable) {
             ContentSearchable cs = (ContentSearchable)currentPage;
-            cs.findPrevious(mainView.getFindText(), mainView.getFindCaseSensitive());
+            cs.findPrevious(mainView.getFindText(), mainView.getFindCaseSensitive(), mainView.getFindRegex());
         }
     }
 

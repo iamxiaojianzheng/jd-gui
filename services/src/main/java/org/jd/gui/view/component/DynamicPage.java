@@ -60,9 +60,9 @@ public class DynamicPage
     @Override public void save(API api, OutputStream outputStream) { page.save(api, outputStream); }
 
     // --- ContentSearchable --- //
-    @Override public boolean highlightText(String text, boolean caseSensitive) { return page.highlightText(text, caseSensitive); }
-    @Override public void findNext(String text, boolean caseSensitive) { page.findNext(text, caseSensitive); }
-    @Override public void findPrevious(String text, boolean caseSensitive) { page.findPrevious(text, caseSensitive); }
+    @Override public boolean highlightText(String text, boolean caseSensitive, boolean regex) { return page.highlightText(text, caseSensitive, regex); }
+    @Override public void findNext(String text, boolean caseSensitive, boolean regex) { page.findNext(text, caseSensitive, regex); }
+    @Override public void findPrevious(String text, boolean caseSensitive, boolean regex) { page.findPrevious(text, caseSensitive, regex); }
 
     // --- ContentSelectable --- //
     @Override public void selectAll() { page.selectAll(); }

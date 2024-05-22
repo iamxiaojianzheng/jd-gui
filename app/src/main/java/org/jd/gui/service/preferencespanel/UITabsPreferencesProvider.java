@@ -9,6 +9,7 @@ package org.jd.gui.service.preferencespanel;
 
 import org.jd.gui.service.platform.PlatformService;
 import org.jd.gui.spi.PreferencesPanel;
+import org.jd.gui.util.MessageUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,14 +27,14 @@ public class UITabsPreferencesProvider extends JPanel implements PreferencesPane
     public UITabsPreferencesProvider() {
         super(new GridLayout(0,1));
 
-        singleLineTabsCheckBox = new JCheckBox("Tabs on a single line");
+        singleLineTabsCheckBox = new JCheckBox(MessageUtil.getMessage("preferences.userinterface.tabs.1"));
 
         add(singleLineTabsCheckBox);
     }
 
     // --- PreferencesPanel --- //
-    @Override public String getPreferencesGroupTitle() { return "User Interface"; }
-    @Override public String getPreferencesPanelTitle() { return "Tabs"; }
+    @Override public String getPreferencesGroupTitle() { return MessageUtil.getMessage("preferences.userinterface.title"); }
+    @Override public String getPreferencesPanelTitle() { return MessageUtil.getMessage("preferences.userinterface.tabs.title"); }
     @Override public JComponent getPanel() { return this; }
 
     @Override public void init(Color errorBackgroundColor) {}

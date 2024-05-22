@@ -13,6 +13,7 @@ import org.jd.gui.api.feature.*;
 import org.jd.gui.model.configuration.Configuration;
 import org.jd.gui.model.history.History;
 import org.jd.gui.service.platform.PlatformService;
+import org.jd.gui.util.MessageUtil;
 import org.jd.gui.util.exception.ExceptionUtil;
 import org.jd.gui.view.component.IconButton;
 import org.jd.gui.view.component.panel.MainTabbedPanel;
@@ -42,7 +43,7 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
     protected History history;
     protected Consumer<File> openFilesCallback;
     protected JFrame mainFrame;
-    protected JMenu recentFiles = new JMenu("Recent Files");
+    protected JMenu recentFiles;
     protected Action closeAction;
     protected Action openTypeAction;
     protected Action backwardAction;
@@ -51,6 +52,7 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
     protected Box findPanel;
     protected JComboBox findComboBox;
     protected JCheckBox findCaseSensitive;
+    protected JCheckBox findRegex;
     protected Color findBackgroundColor;
     protected Color findErrorBackgroundColor;
 
@@ -152,6 +154,9 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
             findCaseSensitive = new JCheckBox();
             findCaseSensitive.setAction(newAction("Case sensitive", true, findCaseSensitiveActionListener));
             findPanel.add(findCaseSensitive);
+            findRegex = new JCheckBox();
+            findRegex.setAction(newAction("Regex", true, findCaseSensitiveActionListener));
+            findPanel.add(findRegex);
             findPanel.add(Box.createHorizontalGlue());
 
             IconButton findCloseButton = new IconButton(newAction(null, null, true, e -> findPanel.setVisible(false)));
@@ -174,43 +179,43 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
             boolean browser = Desktop.isDesktopSupported() ? Desktop.getDesktop().isSupported(Desktop.Action.BROWSE) : false;
 
             // file menu actions
-            Action openAction = newAction("Open File...", newImageIcon("/org/jd/gui/images/open.png"), true, "Open a file", openActionListener);
-            closeAction = newAction("Close", false, closeActionListener);
-            Action saveAction = newAction("Save", newImageIcon("/org/jd/gui/images/save.png"), false, saveActionListener);
-            Action saveAllSourcesAction = newAction("Save All Sources", newImageIcon("/org/jd/gui/images/save_all.png"), false, saveAllSourcesActionListener);
-            Action exitAction = newAction("Exit", true, "Quit this program", exitActionListener);
+            Action openAction = newAction(MessageUtil.getMessage("file.submenu.1"), newImageIcon("/org/jd/gui/images/open.png"), true, "Open a file", openActionListener);
+            closeAction = newAction(MessageUtil.getMessage("file.submenu.2"), false, closeActionListener);
+            Action saveAction = newAction(MessageUtil.getMessage("file.submenu.3"), newImageIcon("/org/jd/gui/images/save.png"), false, saveActionListener);
+            Action saveAllSourcesAction = newAction(MessageUtil.getMessage("file.submenu.4"), newImageIcon("/org/jd/gui/images/save_all.png"), false, saveAllSourcesActionListener);
+            Action exitAction = newAction(MessageUtil.getMessage("file.submenu.6"), true, "Quit this program", exitActionListener);
 
             // edit menu actions
-            Action copyAction = newAction("Copy", newImageIcon("/org/jd/gui/images/copy.png"), false, copyActionListener);
-            Action pasteAction = newAction("Paste Log", newImageIcon("/org/jd/gui/images/paste.png"), true, pasteActionListener);
-            Action selectAllAction = newAction("Select all", false, selectAllActionListener);
-            Action findAction = newAction("Find...", false, findActionListener);
+            Action copyAction = newAction(MessageUtil.getMessage("edit.submenu.1"), newImageIcon("/org/jd/gui/images/copy.png"), false, copyActionListener);
+            Action pasteAction = newAction(MessageUtil.getMessage("edit.submenu.2"), newImageIcon("/org/jd/gui/images/paste.png"), true, pasteActionListener);
+            Action selectAllAction = newAction(MessageUtil.getMessage("edit.submenu.3"), false, selectAllActionListener);
+            Action findAction = newAction(MessageUtil.getMessage("edit.submenu.4"), false, findActionListener);
 
             // navigation menu actions
-            openTypeAction = newAction("Open Type...", newImageIcon("/org/jd/gui/images/open_type.png"), false, openTypeActionListener);
-            Action openTypeHierarchyAction = newAction("Open Type Hierarchy...", false, openTypeHierarchyActionListener);
-            Action goToAction = newAction("Go to Line...", false, goToActionListener);
-            backwardAction = newAction("Back", newImageIcon("/org/jd/gui/images/backward_nav.png"), false, backwardActionListener);
-            forwardAction = newAction("Forward", newImageIcon("/org/jd/gui/images/forward_nav.png"), false, forwardActionListener);
+            openTypeAction = newAction(MessageUtil.getMessage("navigation.submenu.1"), newImageIcon("/org/jd/gui/images/open_type.png"), false, openTypeActionListener);
+            Action openTypeHierarchyAction = newAction(MessageUtil.getMessage("navigation.submenu.2"), false, openTypeHierarchyActionListener);
+            Action goToAction = newAction(MessageUtil.getMessage("navigation.submenu.3"), false, goToActionListener);
+            backwardAction = newAction(MessageUtil.getMessage("navigation.submenu.4"), newImageIcon("/org/jd/gui/images/backward_nav.png"), false, backwardActionListener);
+            forwardAction = newAction(MessageUtil.getMessage("navigation.submenu.5"), newImageIcon("/org/jd/gui/images/forward_nav.png"), false, forwardActionListener);
 
             // search menu actions
-            Action searchAction = newAction("Search...",true, searchActionListener);
+            Action searchAction = newAction(MessageUtil.getMessage("search.submenu.1"),newImageIcon("/org/jd/gui/images/search_src.png"), false, searchActionListener);
 
             // charset menu actions
-            Action gbkAction = newAction("GBK", newImageIcon("/org/jd/gui/images/search_src.png"), false, searchActionListener);
+//            Action gbkAction = newAction("GBK", newImageIcon("/org/jd/gui/images/search_src.png"), false, searchActionListener);
 
             // help menu actions
-            Action jdWebSiteAction = newAction("JD Web site", browser, "Open JD Web site", jdWebSiteActionListener);
-            Action jdGuiIssuesActionAction = newAction("JD-GUI issues", browser, "Open JD-GUI issues page", jdGuiIssuesActionListener);
-            Action jdCoreIssuesActionAction = newAction("JD-Core issues", browser, "Open JD-Core issues page", jdCoreIssuesActionListener);
-            Action preferencesAction = newAction("Preferences...", newImageIcon("/org/jd/gui/images/preferences.png"), true, "Open the preferences panel", preferencesActionListener);
-            Action aboutAction = newAction("About...", true, "About JD-GUI", aboutActionListener);
+            Action jdWebSiteAction = newAction(MessageUtil.getMessage("help.submenu.1"), browser, "Open JD Web site", jdWebSiteActionListener);
+            Action jdGuiIssuesActionAction = newAction(MessageUtil.getMessage("help.submenu.2"), browser, "Open JD-GUI issues page", jdGuiIssuesActionListener);
+            Action jdCoreIssuesActionAction = newAction(MessageUtil.getMessage("help.submenu.3"), browser, "Open JD-Core issues page", jdCoreIssuesActionListener);
+            Action preferencesAction = newAction(MessageUtil.getMessage("help.submenu.4"), newImageIcon("/org/jd/gui/images/preferences.png"), true, "Open the preferences panel", preferencesActionListener);
+            Action aboutAction = newAction(MessageUtil.getMessage("help.submenu.5"), true, "About JD-GUI", aboutActionListener);
 
             // Menu //
             int menuShortcutKeyMask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
             JMenuBar menuBar = new JMenuBar();
 
-            JMenu fileMenu = new JMenu("File");
+            JMenu fileMenu = new JMenu(MessageUtil.getMessage("file.menu"));
             menuBar.add(fileMenu);
             fileMenu.add(openAction).setAccelerator(KeyStroke.getKeyStroke('O', menuShortcutKeyMask));
             fileMenu.addSeparator();
@@ -219,13 +224,14 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
             fileMenu.add(saveAction).setAccelerator(KeyStroke.getKeyStroke('S', menuShortcutKeyMask));
             fileMenu.add(saveAllSourcesAction).setAccelerator(KeyStroke.getKeyStroke('S', menuShortcutKeyMask|InputEvent.ALT_MASK));
             fileMenu.addSeparator();
+            recentFiles = new JMenu(MessageUtil.getMessage("file.submenu.5"));
             fileMenu.add(recentFiles);
             if (!PlatformService.getInstance().isMac()) {
                 fileMenu.addSeparator();
                 fileMenu.add(exitAction).setAccelerator(KeyStroke.getKeyStroke('X', InputEvent.ALT_MASK));
             }
 
-            JMenu editMenu = new JMenu("Edit");
+            JMenu editMenu = new JMenu(MessageUtil.getMessage("edit.menu"));
             menuBar.add(editMenu);
             editMenu.add(copyAction).setAccelerator(KeyStroke.getKeyStroke('C', menuShortcutKeyMask));
             editMenu.add(pasteAction).setAccelerator(KeyStroke.getKeyStroke('V', menuShortcutKeyMask));
@@ -234,7 +240,7 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
             editMenu.addSeparator();
             editMenu.add(findAction).setAccelerator(KeyStroke.getKeyStroke('F', menuShortcutKeyMask));
 
-            JMenu navigationMenu = new JMenu("Navigation");
+            JMenu navigationMenu = new JMenu(MessageUtil.getMessage("navigation.menu"));
             menuBar.add(navigationMenu);
             navigationMenu.add(openTypeAction).setAccelerator(KeyStroke.getKeyStroke('T', menuShortcutKeyMask));
             navigationMenu.add(openTypeHierarchyAction).setAccelerator(KeyStroke.getKeyStroke('H', menuShortcutKeyMask));
@@ -244,15 +250,15 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
             navigationMenu.add(backwardAction).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.ALT_MASK));
             navigationMenu.add(forwardAction).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.ALT_MASK));
 
-            JMenu searchMenu = new JMenu("Search");
+            JMenu searchMenu = new JMenu(MessageUtil.getMessage("search.menu"));
             menuBar.add(searchMenu);
             searchMenu.add(searchAction).setAccelerator(KeyStroke.getKeyStroke('S', menuShortcutKeyMask|InputEvent.SHIFT_MASK));
 
-            JMenu charsetMenu = new JMenu("Charset");
-            menuBar.add(charsetMenu);
-            charsetMenu.add(searchAction).setAccelerator(KeyStroke.getKeyStroke('S', menuShortcutKeyMask|InputEvent.SHIFT_MASK));
+//            JMenu charsetMenu = new JMenu("Charset");
+//            menuBar.add(charsetMenu);
+//            charsetMenu.add(searchAction).setAccelerator(KeyStroke.getKeyStroke('S', menuShortcutKeyMask|InputEvent.SHIFT_MASK));
 
-            JMenu helpMenu = new JMenu("Help");
+            JMenu helpMenu = new JMenu(MessageUtil.getMessage("help.menu"));
             menuBar.add(helpMenu);
             if (browser) {
                 helpMenu.add(jdWebSiteAction);
@@ -437,6 +443,8 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
     }
 
     public boolean getFindCaseSensitive() { return findCaseSensitive.isSelected(); }
+
+    public boolean getFindRegex() { return findRegex.isSelected(); }
 
     public void updateHistoryActions() {
         invokeLater(() -> {

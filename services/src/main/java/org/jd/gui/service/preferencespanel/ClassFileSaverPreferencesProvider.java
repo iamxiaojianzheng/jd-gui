@@ -8,6 +8,7 @@
 package org.jd.gui.service.preferencespanel;
 
 import org.jd.gui.spi.PreferencesPanel;
+import org.jd.gui.util.MessageUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,16 +24,16 @@ public class ClassFileSaverPreferencesProvider extends JPanel implements Prefere
     public ClassFileSaverPreferencesProvider() {
         super(new GridLayout(0,1));
 
-        writeLineNumbersCheckBox = new JCheckBox("Write original line numbers");
-        writeMetadataCheckBox = new JCheckBox("Write metadata");
+        writeLineNumbersCheckBox = new JCheckBox(MessageUtil.getMessage("preferences.sourcesaver.classfile.1"));
+        writeMetadataCheckBox = new JCheckBox(MessageUtil.getMessage("preferences.sourcesaver.classfile.2"));
 
         add(writeLineNumbersCheckBox);
         add(writeMetadataCheckBox);
     }
 
     // --- PreferencesPanel --- //
-    @Override public String getPreferencesGroupTitle() { return "Source Saver"; }
-    @Override public String getPreferencesPanelTitle() { return "Class file"; }
+    @Override public String getPreferencesGroupTitle() { return MessageUtil.getMessage("preferences.sourcesaver.title"); }
+    @Override public String getPreferencesPanelTitle() { return MessageUtil.getMessage("preferences.sourcesaver.classfile.title"); }
     @Override public JComponent getPanel() { return this; }
 
     @Override public void init(Color errorBackgroundColor) {}

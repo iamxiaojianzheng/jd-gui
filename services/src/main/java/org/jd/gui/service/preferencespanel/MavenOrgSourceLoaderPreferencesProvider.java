@@ -8,6 +8,7 @@
 package org.jd.gui.service.preferencespanel;
 
 import org.jd.gui.spi.PreferencesPanel;
+import org.jd.gui.util.MessageUtil;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -39,7 +40,7 @@ public class MavenOrgSourceLoaderPreferencesProvider extends JPanel implements P
     public MavenOrgSourceLoaderPreferencesProvider() {
         super(new BorderLayout());
 
-        enableCheckBox = new JCheckBox("Search source code on maven.org for:");
+        enableCheckBox = new JCheckBox(MessageUtil.getMessage("preferences.sourceloader.mavenorg.1"));
         enableCheckBox.addActionListener(this);
 
         filtersTextArea = new JTextArea();
@@ -77,8 +78,8 @@ public class MavenOrgSourceLoaderPreferencesProvider extends JPanel implements P
     }
 
     // --- PreferencesPanel --- //
-    @Override public String getPreferencesGroupTitle() { return "Source loader"; }
-    @Override public String getPreferencesPanelTitle() { return "maven.org"; }
+    @Override public String getPreferencesGroupTitle() { return MessageUtil.getMessage("preferences.sourceloader.title"); }
+    @Override public String getPreferencesPanelTitle() { return MessageUtil.getMessage("preferences.sourceloader.mavenorg.title"); }
     @Override public JComponent getPanel() { return this; }
 
     @Override

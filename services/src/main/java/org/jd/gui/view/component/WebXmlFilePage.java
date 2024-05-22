@@ -34,7 +34,7 @@ public class WebXmlFilePage extends TypeReferencePage implements UriGettable, In
         this.api = api;
         this.entry = entry;
         // Load content file
-        String text = TextReader.getText(entry.getInputStream());
+        String text = TextReader.getText(entry.getInputStream(), charset);
         // Create hyperlinks
         new PathFinder().find(text);
         // Display

@@ -32,6 +32,8 @@ import java.util.Map;
 
 public class AbstractTextPage extends JPanel implements LineNumberNavigable, ContentSearchable, UriOpenable, PreferencesChangeListener {
     protected static final String FONT_SIZE_KEY = "ViewerPreferences.fontSize";
+    protected static final String CHARSET = "ViewerPreferences.charset";
+    protected static String charset = "UTF-8";
 
     protected static final ImageIcon COLLAPSED_ICON = new ImageIcon(AbstractTextPage.class.getClassLoader().getResource("org/jd/gui/images/plus.png"));
     protected static final ImageIcon EXPANDED_ICON = new ImageIcon(AbstractTextPage.class.getClassLoader().getResource("org/jd/gui/images/minus.png"));
@@ -423,6 +425,11 @@ public class AbstractTextPage extends JPanel implements LineNumberNavigable, Con
             } catch (Exception e) {
                 assert ExceptionUtil.printStackTrace(e);
             }
+        }
+
+        String charset = preferences.get(CHARSET);
+        if (charset != null) {
+            AbstractTextPage.charset = charset;
         }
 
         this.preferences = preferences;

@@ -15,15 +15,29 @@ import org.jd.gui.util.exception.ExceptionUtil;
 import org.jd.gui.util.net.InterProcessCommunicationUtil;
 
 import javax.swing.*;
+import javax.swing.plaf.FontUIResource;
+import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.List;
 
 public class App {
     protected static final String SINGLE_INSTANCE = "UIMainWindowPreferencesProvider.singleInstance";
 
     protected static MainController controller;
+
+    //设置全局字体
+    public static void initGlobalFontSetting(Font fnt){
+        FontUIResource fontRes = new FontUIResource(fnt);
+        for(Enumeration keys = UIManager.getDefaults().keys(); keys.hasMoreElements();){
+            Object key = keys.nextElement();
+            Object value = UIManager.get(key);
+            if(value instanceof FontUIResource)
+                UIManager.put(key, fontRes);
+        }
+    }
 
     public static void main(String[] args) {
 		if (checkHelpFlag(args)) {
@@ -33,6 +47,8 @@ public class App {
             ConfigurationPersister persister = ConfigurationPersisterService.getInstance().get();
             Configuration configuration = persister.load();
             Runtime.getRuntime().addShutdownHook(new Thread(() -> persister.save(configuration)));
+
+            initGlobalFontSetting(new Font("JetBrains Mono", Font.PLAIN, 16));
 
             if ("true".equals(configuration.getPreferences().get(SINGLE_INSTANCE))) {
                 InterProcessCommunicationUtil ipc = new InterProcessCommunicationUtil();

@@ -346,6 +346,10 @@ public class MainController implements API {
         }
     }
 
+    protected void onChangeCharset(String charset) {
+
+    }
+
     protected void onJdWebSite() {
         if (Desktop.isDesktopSupported()) {
             Desktop desktop = Desktop.getDesktop();

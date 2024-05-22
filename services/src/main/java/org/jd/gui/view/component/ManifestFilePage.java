@@ -32,7 +32,7 @@ public class ManifestFilePage extends HyperlinkPage implements UriGettable, Inde
         this.api = api;
         this.entry = entry;
         // Load content file
-        String text = TextReader.getText(entry.getInputStream());
+        String text = TextReader.getText(entry.getInputStream(), charset);
         // Parse hyperlinks. Docs:
         // - http://docs.oracle.com/javase/7/docs/technotes/guides/jar/jar.html
         // - http://docs.oracle.com/javase/7/docs/api/java/lang/instrument/package-summary.html

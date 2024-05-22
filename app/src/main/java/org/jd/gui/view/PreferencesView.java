@@ -78,7 +78,7 @@ public class PreferencesView implements PreferencesPanel.PreferencesPanelChangeL
                     // Add title
                     Box hbox = Box.createHorizontalBox();
                     JLabel title = new JLabel(pp.getPreferencesPanelTitle());
-                    title.setFont(title.getFont().deriveFont(Font.BOLD));
+                    title.setFont(title.getFont().deriveFont(Font.BOLD).deriveFont(16f));
                     hbox.add(title);
                     hbox.add(Box.createHorizontalGlue());
                     hbox.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));

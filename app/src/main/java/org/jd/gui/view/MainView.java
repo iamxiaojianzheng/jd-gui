@@ -172,21 +172,34 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
 
             // Actions //
             boolean browser = Desktop.isDesktopSupported() ? Desktop.getDesktop().isSupported(Desktop.Action.BROWSE) : false;
+
+            // file menu actions
             Action openAction = newAction("Open File...", newImageIcon("/org/jd/gui/images/open.png"), true, "Open a file", openActionListener);
             closeAction = newAction("Close", false, closeActionListener);
             Action saveAction = newAction("Save", newImageIcon("/org/jd/gui/images/save.png"), false, saveActionListener);
             Action saveAllSourcesAction = newAction("Save All Sources", newImageIcon("/org/jd/gui/images/save_all.png"), false, saveAllSourcesActionListener);
             Action exitAction = newAction("Exit", true, "Quit this program", exitActionListener);
+
+            // edit menu actions
             Action copyAction = newAction("Copy", newImageIcon("/org/jd/gui/images/copy.png"), false, copyActionListener);
             Action pasteAction = newAction("Paste Log", newImageIcon("/org/jd/gui/images/paste.png"), true, pasteActionListener);
             Action selectAllAction = newAction("Select all", false, selectAllActionListener);
             Action findAction = newAction("Find...", false, findActionListener);
+
+            // navigation menu actions
             openTypeAction = newAction("Open Type...", newImageIcon("/org/jd/gui/images/open_type.png"), false, openTypeActionListener);
             Action openTypeHierarchyAction = newAction("Open Type Hierarchy...", false, openTypeHierarchyActionListener);
             Action goToAction = newAction("Go to Line...", false, goToActionListener);
             backwardAction = newAction("Back", newImageIcon("/org/jd/gui/images/backward_nav.png"), false, backwardActionListener);
             forwardAction = newAction("Forward", newImageIcon("/org/jd/gui/images/forward_nav.png"), false, forwardActionListener);
-            Action searchAction = newAction("Search...", newImageIcon("/org/jd/gui/images/search_src.png"), false, searchActionListener);
+
+            // search menu actions
+            Action searchAction = newAction("Search...",true, searchActionListener);
+
+            // charset menu actions
+            Action gbkAction = newAction("GBK", newImageIcon("/org/jd/gui/images/search_src.png"), false, searchActionListener);
+
+            // help menu actions
             Action jdWebSiteAction = newAction("JD Web site", browser, "Open JD Web site", jdWebSiteActionListener);
             Action jdGuiIssuesActionAction = newAction("JD-GUI issues", browser, "Open JD-GUI issues page", jdGuiIssuesActionListener);
             Action jdCoreIssuesActionAction = newAction("JD-Core issues", browser, "Open JD-Core issues page", jdCoreIssuesActionListener);
@@ -196,53 +209,63 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
             // Menu //
             int menuShortcutKeyMask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
             JMenuBar menuBar = new JMenuBar();
-            JMenu menu = new JMenu("File");
-            menuBar.add(menu);
-            menu.add(openAction).setAccelerator(KeyStroke.getKeyStroke('O', menuShortcutKeyMask));
-            menu.addSeparator();
-            menu.add(closeAction).setAccelerator(KeyStroke.getKeyStroke('W', menuShortcutKeyMask));
-            menu.addSeparator();
-            menu.add(saveAction).setAccelerator(KeyStroke.getKeyStroke('S', menuShortcutKeyMask));
-            menu.add(saveAllSourcesAction).setAccelerator(KeyStroke.getKeyStroke('S', menuShortcutKeyMask|InputEvent.ALT_MASK));
-            menu.addSeparator();
-            menu.add(recentFiles);
+
+            JMenu fileMenu = new JMenu("File");
+            menuBar.add(fileMenu);
+            fileMenu.add(openAction).setAccelerator(KeyStroke.getKeyStroke('O', menuShortcutKeyMask));
+            fileMenu.addSeparator();
+            fileMenu.add(closeAction).setAccelerator(KeyStroke.getKeyStroke('W', menuShortcutKeyMask));
+            fileMenu.addSeparator();
+            fileMenu.add(saveAction).setAccelerator(KeyStroke.getKeyStroke('S', menuShortcutKeyMask));
+            fileMenu.add(saveAllSourcesAction).setAccelerator(KeyStroke.getKeyStroke('S', menuShortcutKeyMask|InputEvent.ALT_MASK));
+            fileMenu.addSeparator();
+            fileMenu.add(recentFiles);
             if (!PlatformService.getInstance().isMac()) {
-                menu.addSeparator();
-                menu.add(exitAction).setAccelerator(KeyStroke.getKeyStroke('X', InputEvent.ALT_MASK));
+                fileMenu.addSeparator();
+                fileMenu.add(exitAction).setAccelerator(KeyStroke.getKeyStroke('X', InputEvent.ALT_MASK));
             }
-            menu = new JMenu("Edit");
-            menuBar.add(menu);
-            menu.add(copyAction).setAccelerator(KeyStroke.getKeyStroke('C', menuShortcutKeyMask));
-            menu.add(pasteAction).setAccelerator(KeyStroke.getKeyStroke('V', menuShortcutKeyMask));
-            menu.addSeparator();
-            menu.add(selectAllAction).setAccelerator(KeyStroke.getKeyStroke('A', menuShortcutKeyMask));
-            menu.addSeparator();
-            menu.add(findAction).setAccelerator(KeyStroke.getKeyStroke('F', menuShortcutKeyMask));
-            menu = new JMenu("Navigation");
-            menuBar.add(menu);
-            menu.add(openTypeAction).setAccelerator(KeyStroke.getKeyStroke('T', menuShortcutKeyMask));
-            menu.add(openTypeHierarchyAction).setAccelerator(KeyStroke.getKeyStroke('H', menuShortcutKeyMask));
-            menu.addSeparator();
-            menu.add(goToAction).setAccelerator(KeyStroke.getKeyStroke('L', menuShortcutKeyMask));
-            menu.addSeparator();
-            menu.add(backwardAction).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.ALT_MASK));
-            menu.add(forwardAction).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.ALT_MASK));
-            menu = new JMenu("Search");
-            menuBar.add(menu);
-            menu.add(searchAction).setAccelerator(KeyStroke.getKeyStroke('S', menuShortcutKeyMask|InputEvent.SHIFT_MASK));
-            menu = new JMenu("Help");
-            menuBar.add(menu);
+
+            JMenu editMenu = new JMenu("Edit");
+            menuBar.add(editMenu);
+            editMenu.add(copyAction).setAccelerator(KeyStroke.getKeyStroke('C', menuShortcutKeyMask));
+            editMenu.add(pasteAction).setAccelerator(KeyStroke.getKeyStroke('V', menuShortcutKeyMask));
+            editMenu.addSeparator();
+            editMenu.add(selectAllAction).setAccelerator(KeyStroke.getKeyStroke('A', menuShortcutKeyMask));
+            editMenu.addSeparator();
+            editMenu.add(findAction).setAccelerator(KeyStroke.getKeyStroke('F', menuShortcutKeyMask));
+
+            JMenu navigationMenu = new JMenu("Navigation");
+            menuBar.add(navigationMenu);
+            navigationMenu.add(openTypeAction).setAccelerator(KeyStroke.getKeyStroke('T', menuShortcutKeyMask));
+            navigationMenu.add(openTypeHierarchyAction).setAccelerator(KeyStroke.getKeyStroke('H', menuShortcutKeyMask));
+            navigationMenu.addSeparator();
+            navigationMenu.add(goToAction).setAccelerator(KeyStroke.getKeyStroke('L', menuShortcutKeyMask));
+            navigationMenu.addSeparator();
+            navigationMenu.add(backwardAction).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.ALT_MASK));
+            navigationMenu.add(forwardAction).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.ALT_MASK));
+
+            JMenu searchMenu = new JMenu("Search");
+            menuBar.add(searchMenu);
+            searchMenu.add(searchAction).setAccelerator(KeyStroke.getKeyStroke('S', menuShortcutKeyMask|InputEvent.SHIFT_MASK));
+
+            JMenu charsetMenu = new JMenu("Charset");
+            menuBar.add(charsetMenu);
+            charsetMenu.add(searchAction).setAccelerator(KeyStroke.getKeyStroke('S', menuShortcutKeyMask|InputEvent.SHIFT_MASK));
+
+            JMenu helpMenu = new JMenu("Help");
+            menuBar.add(helpMenu);
             if (browser) {
-                menu.add(jdWebSiteAction);
-                menu.add(jdGuiIssuesActionAction);
-                menu.add(jdCoreIssuesActionAction);
-                menu.addSeparator();
+                helpMenu.add(jdWebSiteAction);
+                helpMenu.add(jdGuiIssuesActionAction);
+                helpMenu.add(jdCoreIssuesActionAction);
+                helpMenu.addSeparator();
             }
-            menu.add(preferencesAction).setAccelerator(KeyStroke.getKeyStroke('P', menuShortcutKeyMask|InputEvent.SHIFT_MASK));
+            helpMenu.add(preferencesAction).setAccelerator(KeyStroke.getKeyStroke('P', menuShortcutKeyMask|InputEvent.SHIFT_MASK));
             if (!PlatformService.getInstance().isMac()) {
-                menu.addSeparator();
-                menu.add(aboutAction).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
+                helpMenu.addSeparator();
+                helpMenu.add(aboutAction).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
             }
+
             mainFrame.setJMenuBar(menuBar);
 
             // Icon bar //

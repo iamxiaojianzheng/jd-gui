@@ -34,7 +34,7 @@ public class EjbJarXmlFilePage extends TypeReferencePage implements UriGettable,
         this.api = api;
         this.entry = entry;
         // Load content file
-        String text = TextReader.getText(entry.getInputStream());
+        String text = TextReader.getText(entry.getInputStream(), charset);;
         // Create hyperlinks
         new PathFinder().find(text);
         // Display

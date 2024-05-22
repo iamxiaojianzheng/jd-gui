@@ -167,7 +167,7 @@ public class TabbedPanel<T extends JComponent & UriGettable> extends JPanel impl
                     JMenuItem subMenuItem = new JMenuItem(label.getText(), label.getIcon());
                     subMenuItem.addActionListener(new SubMenuItemActionListener(i));
                     if (component == tabbedPane.getComponentAt(i)) {
-                        subMenuItem.setFont(subMenuItem.getFont().deriveFont(Font.BOLD));
+                        subMenuItem.setFont(subMenuItem.getFont().deriveFont(Font.BOLD).deriveFont(16f));
                     }
                     menu.add(subMenuItem);
                 }

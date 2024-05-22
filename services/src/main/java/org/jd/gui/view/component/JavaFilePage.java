@@ -31,7 +31,7 @@ public class JavaFilePage extends TypePage {
     public JavaFilePage(API api, Container.Entry entry) {
         super(api, entry);
         // Load content file
-        String text = TextReader.getText(entry.getInputStream()).replace("\r\n", "\n").replace('\r', '\n');
+        String text = TextReader.getText(entry.getInputStream(), charset).replace("\r\n", "\n").replace('\r', '\n');
         // Parse
         DeclarationListener declarationListener = new DeclarationListener(entry);
         ReferenceListener referenceListener = new ReferenceListener(entry);

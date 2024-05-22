@@ -37,7 +37,7 @@ public class XmlFilePage extends TypeReferencePage implements UriGettable, Index
         this.api = api;
         this.entry = entry;
         // Load content file
-        String text = TextReader.getText(entry.getInputStream());
+        String text = TextReader.getText(entry.getInputStream(), charset);
         // Create hyperlinks
         Pattern pattern = Pattern.compile("(?s)<\\s*bean[^<]+class\\s*=\\s*\"([^\"]*)\"");
         Matcher matcher = pattern.matcher(textArea.getText());

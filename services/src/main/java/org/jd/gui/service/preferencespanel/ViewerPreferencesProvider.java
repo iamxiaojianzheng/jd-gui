@@ -19,6 +19,7 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Map;
 
 public class ViewerPreferencesProvider extends JPanel implements PreferencesPanel, DocumentListener {
@@ -45,7 +46,7 @@ public class ViewerPreferencesProvider extends JPanel implements PreferencesPane
         add(new JLabel(MessageUtil.getMessage("preferences.viewer.language.title")), BorderLayout.WEST);
 
         languageComboBox = new JComboBox<>();//创建一个下拉列表框c1
-        languageComboBox.addItem("ENG");
+        languageComboBox.addItem("EN");
         languageComboBox.addItem("ZH_CN");
         languageComboBox.addItemListener(e -> {
             if (ItemEvent.SELECTED == e.getStateChange()) {
@@ -53,7 +54,7 @@ public class ViewerPreferencesProvider extends JPanel implements PreferencesPane
                 //getSelectedIndex()返回列表中与给定项匹配的第一个选项。
                 Object selectedItem = languageComboBox.getSelectedItem();
                 if (selectedItem instanceof String) {
-                    MessageUtil.setLanguage(selectedItem.toString());
+                    MessageUtil.setLocale(new Locale(selectedItem.toString().toLowerCase()));
                 }
             }
         });

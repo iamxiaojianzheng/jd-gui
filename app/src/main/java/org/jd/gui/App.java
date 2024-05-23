@@ -7,11 +7,14 @@
 
 package org.jd.gui;
 
+import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import org.jd.gui.controller.MainController;
 import org.jd.gui.model.configuration.Configuration;
 import org.jd.gui.service.configuration.ConfigurationPersister;
 import org.jd.gui.service.configuration.ConfigurationPersisterService;
+import org.jd.gui.service.platform.PlatformService;
 import org.jd.gui.util.MessageUtil;
 import org.jd.gui.util.exception.ExceptionUtil;
 import org.jd.gui.util.net.InterProcessCommunicationUtil;
@@ -20,10 +23,8 @@ import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
 import java.util.List;
+import java.util.*;
 
 public class App {
     protected static final String SINGLE_INSTANCE = "UIMainWindowPreferencesProvider.singleInstance";
@@ -49,10 +50,10 @@ public class App {
             // Load preferences
             ConfigurationPersister persister = ConfigurationPersisterService.getInstance().get();
             Configuration configuration = persister.load();
-            MessageUtil.setLanguage(configuration.getPreferences().get("ViewerPreferences.languageKey"));
+            MessageUtil.setLocale(new Locale(configuration.getPreferences().get("ViewerPreferences.languageKey")));
             Runtime.getRuntime().addShutdownHook(new Thread(() -> persister.save(configuration)));
 
-//            initGlobalFontSetting(new Font("Microsoft YaHei UI", Font.PLAIN, 16));
+            initGlobalFontSetting(new Font("Microsoft YaHei UI", Font.PLAIN, 16));
 
             if ("true".equals(configuration.getPreferences().get(SINGLE_INSTANCE))) {
                 InterProcessCommunicationUtil ipc = new InterProcessCommunicationUtil();
@@ -67,7 +68,14 @@ public class App {
 
             // Create SwingBuilder, set look and feel
             try {
-                FlatLightLaf.setup();
+                PlatformService instance = PlatformService.getInstance();
+                if (instance.isMac()) {
+                    FlatMacLightLaf.setup();
+                } else if (instance.isWindows()) {
+                    FlatIntelliJLaf.setup();
+                } else {
+                    FlatLightLaf.setup();
+                }
 //                UIManager.setLookAndFeel(configuration.getLookAndFeel());
             } catch (Exception e) {
                 configuration.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

@@ -7,6 +7,7 @@
 
 package org.jd.gui.view;
 
+import com.formdev.flatlaf.ui.FlatToolBarUI;
 import org.jd.gui.Constants;
 import org.jd.gui.api.API;
 import org.jd.gui.api.feature.*;
@@ -98,7 +99,7 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
             Action findNextAction = newAction("Next", newImageIcon("/org/jd/gui/images/next_nav.png"), true, findNextActionListener);
             findPanel = Box.createHorizontalBox();
             findPanel.setVisible(false);
-            findPanel.add(new JLabel("Find: "));
+            findPanel.add(new JLabel(MessageUtil.getMessage("page.find") + ": "));
             findComboBox = new JComboBox();
             findComboBox.setEditable(true);
             JComponent editorComponent = (JComponent)findComboBox.getEditor().getEditorComponent();
@@ -142,20 +143,20 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
             toolBar.setFloatable(false);
             toolBar.setRollover(true);
 
-            IconButton findNextButton = new IconButton("Next", newAction(newImageIcon("/org/jd/gui/images/next_nav.png"), true, findNextActionListener));
+            IconButton findNextButton = new IconButton(MessageUtil.getMessage("page.find.next"), newAction(newImageIcon("/org/jd/gui/images/next_nav.png"), true, findNextActionListener));
             toolBar.add(findNextButton);
 
             toolBar.add(Box.createHorizontalStrut(5));
 
-            IconButton findPreviousButton = new IconButton("Previous", newAction(newImageIcon("/org/jd/gui/images/prev_nav.png"), true, findPreviousActionListener));
+            IconButton findPreviousButton = new IconButton(MessageUtil.getMessage("page.find.prev"), newAction(newImageIcon("/org/jd/gui/images/prev_nav.png"), true, findPreviousActionListener));
             toolBar.add(findPreviousButton);
 
             findPanel.add(toolBar);
             findCaseSensitive = new JCheckBox();
-            findCaseSensitive.setAction(newAction("Case sensitive", true, findCaseSensitiveActionListener));
+            findCaseSensitive.setAction(newAction(MessageUtil.getMessage("page.find.casesensitive"), true, findCaseSensitiveActionListener));
             findPanel.add(findCaseSensitive);
             findRegex = new JCheckBox();
-            findRegex.setAction(newAction("Regex", true, findCaseSensitiveActionListener));
+            findRegex.setAction(newAction(MessageUtil.getMessage("page.find.regex"), true, findCaseSensitiveActionListener));
             findPanel.add(findRegex);
             findPanel.add(Box.createHorizontalGlue());
 
@@ -179,11 +180,11 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
             boolean browser = Desktop.isDesktopSupported() ? Desktop.getDesktop().isSupported(Desktop.Action.BROWSE) : false;
 
             // file menu actions
-            Action openAction = newAction(MessageUtil.getMessage("file.submenu.1"), newImageIcon("/org/jd/gui/images/open.png"), true, "Open a file", openActionListener);
+            Action openAction = newAction(MessageUtil.getMessage("file.submenu.1"), newImageIcon("/org/jd/gui/images/open.png"), true, MessageUtil.getMessage("file.submenu.1"), openActionListener);
             closeAction = newAction(MessageUtil.getMessage("file.submenu.2"), false, closeActionListener);
             Action saveAction = newAction(MessageUtil.getMessage("file.submenu.3"), newImageIcon("/org/jd/gui/images/save.png"), false, saveActionListener);
             Action saveAllSourcesAction = newAction(MessageUtil.getMessage("file.submenu.4"), newImageIcon("/org/jd/gui/images/save_all.png"), false, saveAllSourcesActionListener);
-            Action exitAction = newAction(MessageUtil.getMessage("file.submenu.6"), true, "Quit this program", exitActionListener);
+            Action exitAction = newAction(MessageUtil.getMessage("file.submenu.6"), true, MessageUtil.getMessage("file.submenu.6"), exitActionListener);
 
             // edit menu actions
             Action copyAction = newAction(MessageUtil.getMessage("edit.submenu.1"), newImageIcon("/org/jd/gui/images/copy.png"), false, copyActionListener);
@@ -205,11 +206,11 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
 //            Action gbkAction = newAction("GBK", newImageIcon("/org/jd/gui/images/search_src.png"), false, searchActionListener);
 
             // help menu actions
-            Action jdWebSiteAction = newAction(MessageUtil.getMessage("help.submenu.1"), browser, "Open JD Web site", jdWebSiteActionListener);
-            Action jdGuiIssuesActionAction = newAction(MessageUtil.getMessage("help.submenu.2"), browser, "Open JD-GUI issues page", jdGuiIssuesActionListener);
-            Action jdCoreIssuesActionAction = newAction(MessageUtil.getMessage("help.submenu.3"), browser, "Open JD-Core issues page", jdCoreIssuesActionListener);
-            Action preferencesAction = newAction(MessageUtil.getMessage("help.submenu.4"), newImageIcon("/org/jd/gui/images/preferences.png"), true, "Open the preferences panel", preferencesActionListener);
-            Action aboutAction = newAction(MessageUtil.getMessage("help.submenu.5"), true, "About JD-GUI", aboutActionListener);
+            Action jdWebSiteAction = newAction(MessageUtil.getMessage("help.submenu.1"), browser, MessageUtil.getMessage("help.submenu.1.action"), jdWebSiteActionListener);
+            Action jdGuiIssuesActionAction = newAction(MessageUtil.getMessage("help.submenu.2"), browser, MessageUtil.getMessage("help.submenu.2.action"), jdGuiIssuesActionListener);
+            Action jdCoreIssuesActionAction = newAction(MessageUtil.getMessage("help.submenu.3"), browser, MessageUtil.getMessage("help.submenu.3.action"), jdCoreIssuesActionListener);
+            Action preferencesAction = newAction(MessageUtil.getMessage("help.submenu.4"), newImageIcon("/org/jd/gui/images/preferences.png"), true, MessageUtil.getMessage("help.submenu.4.action"), preferencesActionListener);
+            Action aboutAction = newAction(MessageUtil.getMessage("help.submenu.5"), true, MessageUtil.getMessage("help.submenu.5.action"), aboutActionListener);
 
             // Menu //
             int menuShortcutKeyMask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
@@ -281,10 +282,10 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
             toolBar.setFloatable(false);
             toolBar.setRollover(true);
             toolBar.add(new IconButton(openAction));
-            toolBar.addSeparator();
+//            toolBar.addSeparator();
             toolBar.add(new IconButton(openTypeAction));
             toolBar.add(new IconButton(searchAction));
-            toolBar.addSeparator();
+//            toolBar.addSeparator();
             toolBar.add(new IconButton(backwardAction));
             toolBar.add(new IconButton(forwardAction));
             panel.add(toolBar, BorderLayout.PAGE_START);

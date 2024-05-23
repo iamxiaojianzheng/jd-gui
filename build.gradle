@@ -1,12 +1,17 @@
+import proguard.gradle.ProGuardTask
+
 buildscript {
     repositories {
+        maven {
+            url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+        }
         maven{ url'http://maven.aliyun.com/nexus/content/groups/public/'}
         jcenter()
     }
     dependencies {
         classpath 'com.netflix.nebula:gradle-ospackage-plugin:5.3.0'    // RPM & DEB support
         classpath 'edu.sc.seis.gradle:launch4j:2.4.4'
-        classpath 'net.sf.proguard:proguard-gradle:6.1.0'
+        classpath 'net.sf.proguard:proguard-gradle:6.2.2'
     }
 }
 
@@ -32,6 +37,10 @@ allprojects {
     }
 
     repositories {
+        maven {
+            url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+        }
+        mavenCentral()
         jcenter()
     }
 
@@ -101,7 +110,8 @@ jar {
 }
 
 // Minify JAR file //
-task proguard(type: proguard.gradle.ProGuardTask, dependsOn: 'jar') {
+tasks.register('proguard', ProGuardTask) {
+    dependsOn 'jar'
     configuration 'src/proguard/resources/proguard.config.txt'
     injars jar.archivePath
     outjars 'build/libs/' + project.name + '-' + project.version + '-min.jar'
@@ -111,7 +121,7 @@ task proguard(type: proguard.gradle.ProGuardTask, dependsOn: 'jar') {
 
 // Java executable wrapper for Windows //
 launch4j {
-    createExe.dependsOn 'proguard'
+    createExe.dependsOn 'jar'
 
     // fix 中文乱码
     jvmOptions = ['-Dfile.encoding=utf-8']
@@ -121,37 +131,38 @@ launch4j {
     errTitle 'JD-GUI Windows Wrapper'
     copyright 'JD-GUI (C) 2008-2019 Emmanuel Dupuy'
     icon projectDir.path + '/src/launch4j/resources/images/jd-gui.ico'
-    jar projectDir.path + '/' + proguard.outJarFiles[0]
+//    jar projectDir.path + '/' + proguard.outJarFiles[1]
+    jar projectDir.path + '/build/libs/' + project.name + '-' + project.version + '.jar'
     bundledJrePath = '%JAVA_HOME%'
 }
 
 // Packages for Linux //
-ospackage {
-    buildDeb.dependsOn 'proguard'
-    buildRpm.dependsOn 'proguard'
-
-    license = file('LICENSE')
-    maintainer 'Emmanuel Dupuy <emmanue1@users.noreply.github.com>'
-    os LINUX
-    packageDescription 'JD-GUI, a standalone graphical utility that displays Java sources from CLASS files'
-    packageGroup 'java'
-    packageName project.name
-    release '0'
-    summary 'A Java Decompiler'
-    url 'https://github.com/java-decompiler/jd-gui'
-
-    into '/opt/' + project.name
-    from (proguard.outJarFiles[0]) {
-        fileMode 0755
-    }
-    from ('src/linux/resources/') {
-        fileMode 0755
-    }
-    from 'LICENSE', 'NOTICE', 'README.md'
-
-    postInstall 'cd /opt/' + project.name + '; ln -s ./' + file(proguard.outJarFiles[0]).name + ' ./jd-gui.jar; xdg-icon-resource install --size 128 --novendor ./jd_icon_128.png jd-gui; xdg-desktop-menu install ./*.desktop'
-    preUninstall 'cd /opt/' + project.name + '; rm -f ./jd-gui.jar; rm -fr ./ext; xdg-desktop-menu uninstall ./*.desktop'
-}
+//ospackage {
+//    buildDeb.dependsOn 'proguard'
+//    buildRpm.dependsOn 'proguard'
+//
+//    license = file('LICENSE')
+//    maintainer 'Emmanuel Dupuy <emmanue1@users.noreply.github.com>'
+//    os LINUX
+//    packageDescription 'JD-GUI, a standalone graphical utility that displays Java sources from CLASS files'
+//    packageGroup 'java'
+//    packageName project.name
+//    release '0'
+//    summary 'A Java Decompiler'
+//    url 'https://github.com/java-decompiler/jd-gui'
+//
+//    into '/opt/' + project.name
+//    from (proguard.outJarFiles[0]) {
+//        fileMode 0755
+//    }
+//    from ('src/linux/resources/') {
+//        fileMode 0755
+//    }
+//    from 'LICENSE', 'NOTICE', 'README.md'
+//
+//    postInstall 'cd /opt/' + project.name + '; ln -s ./' + file(proguard.outJarFiles[0]).name + ' ./jd-gui.jar; xdg-icon-resource install --size 128 --novendor ./jd_icon_128.png jd-gui; xdg-desktop-menu install ./*.desktop'
+//    preUninstall 'cd /opt/' + project.name + '; rm -f ./jd-gui.jar; rm -fr ./ext; xdg-desktop-menu uninstall ./*.desktop'
+//}
 
 // Distributions for OSX and Windows //
 distributions {

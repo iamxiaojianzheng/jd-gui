@@ -9,6 +9,7 @@ package org.jd.gui.view;
 
 import org.jd.gui.model.configuration.Configuration;
 import org.jd.gui.spi.PreferencesPanel;
+import org.jd.gui.util.MessageUtil;
 import org.jd.gui.util.swing.SwingUtil;
 
 import javax.swing.*;
@@ -32,7 +33,7 @@ public class PreferencesView implements PreferencesPanel.PreferencesPanelChangeL
         this.panels = panels;
         // Build GUI
         SwingUtil.invokeLater(() -> {
-            preferencesDialog = new JDialog(mainFrame, "Preferences", false);
+            preferencesDialog = new JDialog(mainFrame, MessageUtil.getMessage("preferences.title"), false);
 
             JPanel panel = new JPanel();
             panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
@@ -72,7 +73,7 @@ public class PreferencesView implements PreferencesPanel.PreferencesPanelChangeL
                 vbox.setBorder(BorderFactory.createTitledBorder(groupName));
 
                 ArrayList<PreferencesPanel> sortedPreferencesPanels = groups.get(groupName);
-                Collections.sort(sortedPreferencesPanels, new PreferencesPanelComparator());
+                sortedPreferencesPanels.sort(new PreferencesPanelComparator());
 
                 for (PreferencesPanel pp : sortedPreferencesPanels) {
                     // Add title
@@ -105,7 +106,7 @@ public class PreferencesView implements PreferencesPanel.PreferencesPanelChangeL
             // Buttons "Ok" and "Cancel"
             Box hbox = Box.createHorizontalBox();
             hbox.add(Box.createHorizontalGlue());
-            preferencesOkButton.setText("   Ok   ");
+            preferencesOkButton.setText(MessageUtil.getMessage("preferences.save"));
             preferencesOkButton.addActionListener(e -> {
                 for (PreferencesPanel pp : panels) {
                     pp.savePreferences(preferences);
@@ -115,7 +116,7 @@ public class PreferencesView implements PreferencesPanel.PreferencesPanelChangeL
             });
             hbox.add(preferencesOkButton);
             hbox.add(Box.createHorizontalStrut(5));
-            JButton preferencesCancelButton = new JButton("Cancel");
+            JButton preferencesCancelButton = new JButton(MessageUtil.getMessage("preferences.cancel"));
             Action preferencesCancelActionListener = new AbstractAction() {
                 public void actionPerformed(ActionEvent actionEvent) { preferencesDialog.setVisible(false); }
             };
@@ -142,8 +143,8 @@ public class PreferencesView implements PreferencesPanel.PreferencesPanelChangeL
                 preferredHeight = maxHeight;
             }
 
-            preferencesScrollPane.setPreferredSize(new Dimension(400, preferredHeight));
-            preferencesDialog.setMinimumSize(new Dimension(300, 200));
+            preferencesScrollPane.setPreferredSize(new Dimension(500, preferredHeight));
+            preferencesDialog.setMinimumSize(new Dimension(500, 200));
 
             // Prepare to display
             preferencesDialog.pack();
@@ -169,7 +170,7 @@ public class PreferencesView implements PreferencesPanel.PreferencesPanelChangeL
         SwingUtil.invokeLater(() -> {
             boolean valid = source.arePreferencesValid();
 
-            valids.put(source, Boolean.valueOf(valid));
+            valids.put(source, valid);
 
             if (valid) {
                 for (PreferencesPanel pp : panels) {

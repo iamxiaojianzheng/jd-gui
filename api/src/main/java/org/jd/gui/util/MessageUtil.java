@@ -1,52 +1,39 @@
 package org.jd.gui.util;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MessageUtil {
 
-    private static Map<String, Properties> properties = new HashMap<>();
-    private static String language = "ENG";
-
-    public static String getLanguage() {
-        return language;
-    }
-
-    public static void setLanguage(String language) {
-        if (language == null || language.isEmpty()) {
-            return;
-        }
-        MessageUtil.language = language;
-    }
+    private static ResourceBundle resourceBundle;
+    private static Locale locale = Locale.ENGLISH;
 
     static {
-        try {
-            Properties prop1 = new Properties();
-            prop1.load(MessageUtil.class.getClassLoader().getResourceAsStream("i18n/ZH_CN.properties"));
-            properties.put("ZH_CN", prop1);
-            Properties prop2 = new Properties();
-            prop2.load(MessageUtil.class.getClassLoader().getResourceAsStream("i18n/ENG.properties"));
-            properties.put("ENG", prop2);
-        } catch (IOException e) {
-            e.printStackTrace();
+        resourceBundle = ResourceBundle.getBundle("", locale);
+    }
+
+    public static void setLocale(Locale locale) {
+        if (locale != null) {
+            MessageUtil.locale = locale;
+            resourceBundle = ResourceBundle.getBundle("", locale);
         }
     }
 
     public static String getMessage(String key) {
-        return properties.get(language).getProperty(key);
+        return resourceBundle.getString(key);
     }
 
     public static List<String> getOpenTips() {
-        Properties prop = properties.get(language);
         Pattern pattern = Pattern.compile("open\\.tip\\[(\\d+)\\]");
         String[] tips = new String[3];
-        for (String name : prop.stringPropertyNames()) {
+        Enumeration<String> keys = resourceBundle.getKeys();
+        while (keys.hasMoreElements()) {
+            String name = keys.nextElement();
             Matcher matcher = pattern.matcher(name);
             if (matcher.find()) {
                 int index = Integer.parseInt(matcher.group(1));
-                String tip = prop.getProperty(name);
+                String tip = resourceBundle.getString(name);
                 tips[index] = tip;
             }
         }
@@ -54,8 +41,9 @@ public class MessageUtil {
     }
 
     public static void main(String[] args) {
-        System.out.println(getMessage("file.menu"));
         System.out.println(getOpenTips());
+//        System.out.println(getMessage("file.menu"));
+//        System.out.println(getOpenTips());
     }
 
 }

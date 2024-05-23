@@ -2,8 +2,21 @@ apply plugin: 'java'
 
 dependencies {
     provided 'com.yuvimasory:orange-extensions:1.3.0'   // OSX support
-//    implementation("com.github.weisj:darklaf-core:latest.integration")
-    implementation 'com.formdev:flatlaf:3.4.1'
+//    compile("com.github.weisj:darklaf-core:latest.integration")
+//    implementation ("com.formdev:flatlaf:3.4.1")
+
+    def flatlafVersion = "3.4.1"
+    compile( "com.formdev:flatlaf:${flatlafVersion}" )
+//    compile( "com.formdev:flatlaf:${flatlafVersion}:linux-x86_64@so" )
+//    compile( "com.formdev:flatlaf:${flatlafVersion}:macos-arm64@dylib" )
+//    compile( "com.formdev:flatlaf:${flatlafVersion}:macos-x86_64@dylib" )
+//    compile( "com.formdev:flatlaf:${flatlafVersion}:windows-x86_64@dll" )
+
+    // 32-bit (not needed if you bundle a 64-bit JRE with your application)
+//    compile( "com.formdev:flatlaf:${flatlafVersion}:windows-x86@dll" )
+
+    // ARM 64-bit (not needed if your application does not support Windows on ARM)
+//    compile( "com.formdev:flatlaf:${flatlafVersion}:windows-arm64@dll" )
 
     compile project(':api')
     runtime project(':services')

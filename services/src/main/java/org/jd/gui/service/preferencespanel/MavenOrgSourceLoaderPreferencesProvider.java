@@ -65,7 +65,7 @@ public class MavenOrgSourceLoaderPreferencesProvider extends JPanel implements P
             scrollPane.setPreferredSize(new Dimension(-1, 56));
         }
 
-        resetButton = new JButton("Reset");
+        resetButton = new JButton(MessageUtil.getMessage("preferences.sourceloader.mavenorg.reset"));
         resetButton.addActionListener(this);
 
         JPanel southPanel = new JPanel(new BorderLayout());

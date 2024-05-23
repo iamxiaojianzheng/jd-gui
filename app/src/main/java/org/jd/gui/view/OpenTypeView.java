@@ -10,6 +10,7 @@ package org.jd.gui.view;
 import org.jd.gui.api.API;
 import org.jd.gui.api.model.Container;
 import org.jd.gui.api.model.Type;
+import org.jd.gui.util.MessageUtil;
 import org.jd.gui.util.exception.ExceptionUtil;
 import org.jd.gui.util.function.TriConsumer;
 import org.jd.gui.util.swing.SwingUtil;
@@ -44,7 +45,7 @@ public class OpenTypeView {
         this.api = api;
         // Build GUI
         SwingUtil.invokeLater(() -> {
-            openTypeDialog = new JDialog(mainFrame, "Open Type", false);
+            openTypeDialog = new JDialog(mainFrame, MessageUtil.getMessage("navigation.opentype"), false);
 
             JPanel panel = new JPanel();
             panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
@@ -56,7 +57,7 @@ public class OpenTypeView {
             panel.add(vbox, BorderLayout.NORTH);
 
             Box hbox = Box.createHorizontalBox();
-            hbox.add(new JLabel("Select a type to open (* = any string, ? = any character, TZ = TimeZone):"));
+            hbox.add(new JLabel(MessageUtil.getMessage("navigation.opentype.info")));
             hbox.add(Box.createHorizontalGlue());
             vbox.add(hbox);
 
@@ -106,7 +107,7 @@ public class OpenTypeView {
             vbox.add(Box.createVerticalStrut(10));
 
             hbox = Box.createHorizontalBox();
-            hbox.add(openTypeMatchLabel = new JLabel("Matching types:"));
+            hbox.add(openTypeMatchLabel = new JLabel(MessageUtil.getMessage("navigation.opentype.matching")));
             hbox.add(Box.createHorizontalGlue());
             vbox.add(hbox);
 
@@ -141,12 +142,12 @@ public class OpenTypeView {
             vbox.add(Box.createVerticalStrut(25));
             vbox.add(hbox = Box.createHorizontalBox());
             hbox.add(Box.createHorizontalGlue());
-            JButton openTypeOpenButton = new JButton("Open");
+            JButton openTypeOpenButton = new JButton(MessageUtil.getMessage("navigation.opentype.open"));
             hbox.add(openTypeOpenButton);
             openTypeOpenButton.setEnabled(false);
             openTypeOpenButton.addActionListener(e -> onTypeSelected(selectedTypeCallback));
             hbox.add(Box.createHorizontalStrut(5));
-            JButton openTypeCancelButton = new JButton("Cancel");
+            JButton openTypeCancelButton = new JButton(MessageUtil.getMessage("navigation.opentype.cancel"));
             hbox.add(openTypeCancelButton);
             Action openTypeCancelActionListener = new AbstractAction() {
                 @Override public void actionPerformed(ActionEvent actionEvent) { openTypeDialog.setVisible(false); }
@@ -220,16 +221,18 @@ public class OpenTypeView {
 
             int count = typeNames.size();
 
-            switch (count) {
-                case 0:
-                    openTypeMatchLabel.setText("Matching types:");
-                    break;
-                case 1:
-                    openTypeMatchLabel.setText("1 matching type:");
-                    break;
-                default:
-                    openTypeMatchLabel.setText(count + " matching types:");
-            }
+            String text = String.format(MessageUtil.getMessage("navigation.opentype.nmatching"), count);
+            openTypeMatchLabel.setText(text);
+//            switch (count) {
+//                case 0:
+//                    openTypeMatchLabel.setText(text);
+//                    break;
+//                case 1:
+//                    openTypeMatchLabel.setText("1 " + MessageUtil.getMessage("navigation.opentype.matching"));
+//                    break;
+//                default:
+//                    openTypeMatchLabel.setText(count + " " + MessageUtil.getMessage("navigation.opentype.matching"));
+//            }
         });
     }
 

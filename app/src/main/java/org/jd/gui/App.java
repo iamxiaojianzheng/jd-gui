@@ -7,6 +7,7 @@
 
 package org.jd.gui;
 
+import com.formdev.flatlaf.FlatLightLaf;
 import org.jd.gui.controller.MainController;
 import org.jd.gui.model.configuration.Configuration;
 import org.jd.gui.service.configuration.ConfigurationPersister;
@@ -51,7 +52,7 @@ public class App {
             MessageUtil.setLanguage(configuration.getPreferences().get("ViewerPreferences.languageKey"));
             Runtime.getRuntime().addShutdownHook(new Thread(() -> persister.save(configuration)));
 
-            initGlobalFontSetting(new Font("Microsoft YaHei UI", Font.PLAIN, 16));
+//            initGlobalFontSetting(new Font("Microsoft YaHei UI", Font.PLAIN, 16));
 
             if ("true".equals(configuration.getPreferences().get(SINGLE_INSTANCE))) {
                 InterProcessCommunicationUtil ipc = new InterProcessCommunicationUtil();
@@ -66,7 +67,8 @@ public class App {
 
             // Create SwingBuilder, set look and feel
             try {
-                UIManager.setLookAndFeel(configuration.getLookAndFeel());
+                FlatLightLaf.setup();
+//                UIManager.setLookAndFeel(configuration.getLookAndFeel());
             } catch (Exception e) {
                 configuration.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                 try {

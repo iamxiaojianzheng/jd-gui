@@ -2,6 +2,9 @@ apply plugin: 'java'
 
 dependencies {
     provided 'com.yuvimasory:orange-extensions:1.3.0'   // OSX support
+//    implementation("com.github.weisj:darklaf-core:latest.integration")
+    implementation 'com.formdev:flatlaf:3.4.1'
+
     compile project(':api')
     runtime project(':services')
 }

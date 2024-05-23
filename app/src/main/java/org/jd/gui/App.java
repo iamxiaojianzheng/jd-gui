@@ -50,7 +50,7 @@ public class App {
             // Load preferences
             ConfigurationPersister persister = ConfigurationPersisterService.getInstance().get();
             Configuration configuration = persister.load();
-            MessageUtil.setLocale(new Locale(configuration.getPreferences().get("ViewerPreferences.languageKey")));
+            MessageUtil.setLocale(new Locale(configuration.getPreferences().getOrDefault("ViewerPreferences.languageKey", "en")));
             Runtime.getRuntime().addShutdownHook(new Thread(() -> persister.save(configuration)));
 
             initGlobalFontSetting(new Font("Microsoft YaHei UI", Font.PLAIN, 16));

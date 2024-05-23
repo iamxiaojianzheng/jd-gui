@@ -131,38 +131,37 @@ launch4j {
     errTitle 'JD-GUI Windows Wrapper'
     copyright 'JD-GUI (C) 2008-2019 Emmanuel Dupuy'
     icon projectDir.path + '/src/launch4j/resources/images/jd-gui.ico'
-//    jar projectDir.path + '/' + proguard.outJarFiles[1]
-    jar projectDir.path + '/build/libs/' + project.name + '-' + project.version + '.jar'
+    jar projectDir.path + '/' + proguard.outJarFiles[0]
     bundledJrePath = '%JAVA_HOME%'
 }
 
 // Packages for Linux //
-//ospackage {
-//    buildDeb.dependsOn 'proguard'
-//    buildRpm.dependsOn 'proguard'
-//
-//    license = file('LICENSE')
-//    maintainer 'Emmanuel Dupuy <emmanue1@users.noreply.github.com>'
-//    os LINUX
-//    packageDescription 'JD-GUI, a standalone graphical utility that displays Java sources from CLASS files'
-//    packageGroup 'java'
-//    packageName project.name
-//    release '0'
-//    summary 'A Java Decompiler'
-//    url 'https://github.com/java-decompiler/jd-gui'
-//
-//    into '/opt/' + project.name
-//    from (proguard.outJarFiles[0]) {
-//        fileMode 0755
-//    }
-//    from ('src/linux/resources/') {
-//        fileMode 0755
-//    }
-//    from 'LICENSE', 'NOTICE', 'README.md'
-//
-//    postInstall 'cd /opt/' + project.name + '; ln -s ./' + file(proguard.outJarFiles[0]).name + ' ./jd-gui.jar; xdg-icon-resource install --size 128 --novendor ./jd_icon_128.png jd-gui; xdg-desktop-menu install ./*.desktop'
-//    preUninstall 'cd /opt/' + project.name + '; rm -f ./jd-gui.jar; rm -fr ./ext; xdg-desktop-menu uninstall ./*.desktop'
-//}
+ospackage {
+    buildDeb.dependsOn 'proguard'
+    buildRpm.dependsOn 'proguard'
+
+    license = file('LICENSE')
+    maintainer 'Emmanuel Dupuy <emmanue1@users.noreply.github.com>'
+    os LINUX
+    packageDescription 'JD-GUI, a standalone graphical utility that displays Java sources from CLASS files'
+    packageGroup 'java'
+    packageName project.name
+    release '0'
+    summary 'A Java Decompiler'
+    url 'https://github.com/java-decompiler/jd-gui'
+
+    into '/opt/' + project.name
+    from (proguard.outJarFiles[0]) {
+        fileMode 0755
+    }
+    from ('src/linux/resources/') {
+        fileMode 0755
+    }
+    from 'LICENSE', 'NOTICE', 'README.md'
+
+    postInstall 'cd /opt/' + project.name + '; ln -s ./' + file(proguard.outJarFiles[0]).name + ' ./jd-gui.jar; xdg-icon-resource install --size 128 --novendor ./jd_icon_128.png jd-gui; xdg-desktop-menu install ./*.desktop'
+    preUninstall 'cd /opt/' + project.name + '; rm -f ./jd-gui.jar; rm -fr ./ext; xdg-desktop-menu uninstall ./*.desktop'
+}
 
 // Distributions for OSX and Windows //
 distributions {
